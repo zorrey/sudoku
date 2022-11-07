@@ -1,7 +1,10 @@
 
 //
-class SudokuSolver {
+//let solutions =new Set();
+//let solutions =[];
 
+class SudokuSolver {
+  
   validate(puzzleString) {
     if(puzzleString.length != 81)
     return false;
@@ -20,7 +23,7 @@ class SudokuSolver {
     return true;
   }
   isCellVoid(matrix) {
-    let cells = {isZero: true, row: -1, col:-1};
+    let cells = {isMatrixFull: true, row: -1, col:-1};
     //let matrix = this.matrixCreator(puzzleString);
     //console.log(matrix);
     for(let i=0;i<9;i++){
@@ -28,11 +31,11 @@ class SudokuSolver {
           if(matrix[i][j]==0){
             cells.row = i;
             cells.col =j;
-            cells.isZero = false;
+            cells.isMatrixFull = false;
             break;
           }
         }
-       if(!cells.isZero)
+       if(!cells.isMatrixFull)
         break ; 
     }
     return cells;
@@ -200,18 +203,20 @@ class SudokuSolver {
     if(matrix==[] || !matrix) return false;
     //if(!this.checkInputPuzzle(matrix)) return false;
 
-    if(this.isCellVoid(matrix).isZero) return true;    
+    if(this.isCellVoid(matrix).isMatrixFull) return true;    
     
     for(let num = 1; num <= 9; num++){
 
       if(this.isUnique(matrix, row, col, num)){
-
+       
         //when unique in row, column and square assign the cell to the number
         matrix[row][col] = num;
         
-        //if all other empty cells are filled and valid sudoku is solved
-        if(this.solveSudoku(matrix))
-        return matrix;
+        //if all other empty cells are filled and valid: sudoku is solved
+        if(this.solveSudoku(matrix)){
+
+          return matrix;
+        }        
         //else cell is back to zero and num is changed to the next option
         else 
           matrix[row][col] = 0;      
@@ -221,6 +226,87 @@ class SudokuSolver {
     }    
     return false;    
   }
+/*   solutionNumberSudoku(matrix) {  
+   //console.log(this.stringReturn(matrix)) ;
+    if(!this.checkInputPuzzle(this.stringReturn(matrix))) return false;
+    if(this.isCellVoid(matrix).isMatrixFull) {
+      //console.log(true, this.stringReturn(matrix));
+      return true;
+    }
+      for(let i=0;i<9;i++){
+        for(let j=0;j<9;j++){
+          if(matrix[i][j]==0){
+            for(let num = 1; num <= 9; num++){
+              if(this.isUnique(matrix,i,j,num)){
+                let newM = [... matrix];
+                //console.log("newM",this.stringReturn(newM)) ;
+                newM[i][j]=num;
+               // console.log(`newM + num-${num}-[${i};${j}]`, this.stringReturn(newM)) ;
+                if(this.solutionNumberSudoku(newM)===true){
+                  //console.log(this.stringReturn(newM))
+                  solutions.push(this.stringReturn(newM));
+                  continue;
+                }else{
+                  newM[i][j]=0;                  
+                }
+           
+              }      
+            
+            } 
+
+           return solutions;      
+          }          
+        }
+      }
+        
+  } */
+
+  getNumberSolutions(data){
+  let solutions=[];
+  if(!this.checkInputPuzzle(this.stringReturn(data))) return -1;
+ const solutionNumberSudoku = (matrix) =>{  
+    //console.log(this.stringReturn(matrix)) ;
+     if(!this.checkInputPuzzle(this.stringReturn(matrix))) return false;
+     if(this.isCellVoid(matrix).isMatrixFull) {
+       //console.log(true, this.stringReturn(matrix));
+       return true;
+     }
+       for(let i=0;i<9;i++){
+         for(let j=0;j<9;j++){
+           if(matrix[i][j]===0){
+            //console.log(i,j,matrix[i][j])
+             for(let num = 1; num <= 9; num++){
+               if(this.isUnique(matrix,i,j,num)){
+                 let newM = [... matrix];
+                 //console.log("newM",this.stringReturn(newM)) ;
+                 newM[i][j]=num;
+                // console.log(`newM + num-${num}-[${i};${j}]`, this.stringReturn(newM)) ;
+                 if(solutionNumberSudoku(newM)===true){
+                   //console.log(this.stringReturn(newM))
+                   if(newM)
+                   {solutions.push(this.stringReturn(newM));
+                   continue;}
+                   
+                 }else{
+                   newM[i][j]=0;                  
+                 }
+            
+               }      
+             
+             } 
+ 
+            return solutions;      
+           }    
+
+         }
+       }
+       return solutions;      
+   }
+   //return solutionNumberSudoku(data).length;
+   let answer = solutionNumberSudoku(data);
+   if(answer===true) return 0;
+   return answer.length;
+}
 solve(puzzleString){
   
 if(!this.validate(puzzleString) || !this.validChar(puzzleString) || !this.checkInputPuzzle(puzzleString)) return false
@@ -255,6 +341,9 @@ matrixCreator(puzzleString){
 
 stringReturn(datapuzzle){
   //console.log('datapuzzle', datapuzzle)
+  if(typeof datapuzzle==="string"|| typeof datapuzzle==="boolean"){
+    return datapuzzle;
+  }
   let returnstr = datapuzzle.reduce((acc, item) =>{
    item = [...item.map(el => {
       if(el == 0) el = '.';
@@ -266,7 +355,13 @@ stringReturn(datapuzzle){
   return returnstr
 }
 }
-//let solver = new SudokuSolver;
-//let grid = solver.matrixCreator("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..");
+/*   let solver = new SudokuSolver;
+  let str=".....5.1.85.4....243.......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
+let grid = solver.matrixCreator(".....5.1.85.4....243.......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..");
+//let solution = solver.getNumberSolutions(grid);
+//console.log("solver.solutionNumberSudoku",  solution);  
+console.log("solver.checkInputPuzzle",  solver.checkInputPuzzle("997235418851496372432178956174569283395842761628713549283657194516924837749381625"));  
+console.log("solver.getNumberSolution",  solver.getNumberSolutions(solver.matrixCreator('967235418851496372432178956174569283395842761628713549283657194516924837749381625')));  
+ */
 
 module.exports = SudokuSolver;
