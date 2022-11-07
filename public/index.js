@@ -300,7 +300,7 @@ const getSolved = async () => {
                   <span> {msg.error? msg.error : 
                           msg.solve? "": "---"}</span></p>
                 </div>  
-              <div id="check">
+          {/*     <div id="check">
                 <input onClick={getChecked} type="button" id="check-button" value="Check"/>              
                 <p className="input">Coordinate (A1): 
                     <input onChange={(e)=>getCoord(e)} value={coord} id="coord" className="checker" type="text" name="coordinate"/>
@@ -312,7 +312,8 @@ const getSolved = async () => {
                   <p className="input"> "valid":  <span> {msg.valid? msg.valid : ""} </span></p> 
                   <p className="input">"conflict":<span> {msg.conflict? msg.conflict : "no conflict"} </span></p>  
                 </div>
-              </div>                     
+              </div>   */}
+
               </form>             
             </div>
             <div className="check">
