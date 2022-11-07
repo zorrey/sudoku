@@ -13,7 +13,13 @@ body{
   font-family: Impact,  'Arial Narrow Bold', sans-serif;
   font-weight: lighter;
 }
-
+#row{
+  justify-content: center;
+  display: flex;
+  flex-direction:row;  
+  width: 70%;
+  padding: 5px;
+}
 #container {
   display: flex;
   flex-direction: column;  
@@ -167,7 +173,12 @@ input[type="button"]{
     flex-wrap: wrap;    
     font-size: 20px;
   }
-  
+  #row{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;  
+    width: 100%;
+  }
 .check{
   width: 100vw;
   display: flex;
@@ -278,7 +289,13 @@ input[type="button"]{
    border-radius: 5px;
    color:rgb(78, 37, 37);
   }
-
+  #row{
+    flex-wrap: wrap;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;  
+    width: 100%;
+  }
  
   td {  
     padding: 0px 1px;

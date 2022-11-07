@@ -1,11 +1,13 @@
 'use strict';
 
 const SudokuSolver = require('../controllers/sudoku-solver.js');
+const SudokuGen = require('../controllers/sudoku_generator.js');
 //const matrixCreator = require('../controllers/sudoku-solver.js');
 
 module.exports = function (app) {
   
   let solver = new SudokuSolver();
+  let gen = new SudokuGen();
     
 app.route('/api/check')
     .post((req, res) => {
@@ -70,5 +72,15 @@ app.route('/api/check')
         if(answer === true) return res.json({ solution: 'true', text: "already solved!" });
        return res.json({solution: answer, text: "solved!"});
       }
+    });
+  app.route('/api/generate')
+    .post((req, res) => {
+      console.log('req.body: ', req.body);
+      let level=req.body.level;
+      const {genAnswer , gensolution}= gen.creator(level);
+      console.log("gensolution", gensolution);
+      console.log("genAnswer", genAnswer);
+      if(!genAnswer)  return res.json({ error: 'Error when generating sudoku.' });
+      return res.json({genAnswer: genAnswer, text: "generated!", gensolution: gensolution});
     });
 };
