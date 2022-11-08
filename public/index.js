@@ -5,7 +5,9 @@ const column = [... Array(9).keys()].map(i => i+1);
 const row = ['A','B','C','D','E','F','G','H','I'];
 let conflict;
 let initial = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
-let initialSolution = "769235418851496372432178956174569283395842761628713549283657194516924837947381625"
+let initialSolution = "769235418851496372432178956174569283395842761628713549283657194516924837947381625";
+let initialColorMatrix = Array(81).fill("white");
+
 //let initial = ".................................................................................";
 //let initial = "..7.......4..........4.8....3....62..6..2...1752..9.........27...96..518....723.4";
 //console.log(row);
@@ -16,20 +18,21 @@ const [locked, setLocked] = React.useState(initial);
 const [input, setInput] = React.useState(" ");
 const [coord, setCoord] = React.useState(" ");
 const [val, setVal] = React.useState(" ");
-const [color, setColor] = React.useState("white");
+const [color, setColor] = React.useState(initialColorMatrix);
 const [gensolution, setGensolution] = React.useState(initialSolution);
-const [msg, setMsg] = React.useState([{ valid:"",
-                                        conflict:"",
+const [msg, setMsg] = React.useState([{
                                         error:"",
-                                        solve:""
+                                        solve:"",
+                                        numberSol: 1
                                         }]);                                 
 
  React.useEffect(() => {  
   const timer = setTimeout(() => {
     console.log('This will run after 1 second!')
-    setColor("yellow");
+    setColor(initialColorMatrix);
   }, 1000);
   return () => clearTimeout(timer);
+
 }, [text]) 
  
 const handleInput = (e, col, row) => {
@@ -37,22 +40,27 @@ const handleInput = (e, col, row) => {
   setCoord((row+col).trim());
   setVal(e.target.value.trim());   
   handleText(e.target.value, col, row);
-  setColor("red");
 }
 
 const handleText=(e, col, row) => {  
-  console.log("input:", input)
+ // console.log("input:", input)
   let temp = text.split("");
+  let tempColor = [...color];
   let newText="";
   let index =( row.charCodeAt(0)-"A".charCodeAt(0))*9 + ((col-1) % 9) ;
   if( !e ) temp[index]="."
-  else temp[index]=e;
+  else {
+    temp[index]=e;
+    tempColor[index]="red"
+  }
   for (let i=0; i<temp.length; i++){
-    if(temp[i])
+    if(temp[i]){
     newText+=temp[i];
-    else newText+=".";
+    
+  } else newText+=".";
   }
   setText(newText); 
+  setColor(tempColor);
 }  
 
 const handleTextarea=(e)=>{
@@ -88,19 +96,9 @@ const getCoord=(e) => {
 const getVal=(e) => {
   setVal(e.target.value);
 }  
-    
-/*  const fillCell=(col, row)=>{
-  let cell;
-  let temp = text.split("");
-  let index =( row.charCodeAt(0)-"A".charCodeAt(0))*9 + ((col-1) % 9) ;
-  cell = temp[index]=="."? " ": temp[index];
-  return cell;
-};  */
 
 const getChecked = async ()=> {
-  setMsg({valid:"",
-          conflict:"",
-          error:"",
+  setMsg({error:"",
           solve:""})
 
   const stuff = {"puzzle": text, "coordinate": coord, "value": val}
@@ -113,16 +111,11 @@ const getChecked = async ()=> {
     body: JSON.stringify(stuff)
   })
  let checked = await checkdata.json();
- if(checked.error){setMsg(prev => ({...prev, error:checked.error}))}
- if(checked.conflict!=undefined) 
-{ conflict = checked.conflict.reduce((acc,el)=>{  acc+= el.toLowerCase()+", ";  return acc;  },"")}
- if(checked.valid!=null)
- setMsg(prev => ({...prev, valid:checked.valid.toString(), conflict: conflict? conflict : ""}))
+ if(checked.error){setMsg(prev => ({...prev, error:checked.error}))} 
 };
 
 const reload = ()=>{
-  setMsg([{ valid:"",
-            conflict:"",
+  setMsg([{
             error:"",
             solve:""
         }]);   
@@ -173,7 +166,7 @@ const generate = async (level) =>{
      },
      body: JSON.stringify(stuff)
    })
-    const parsed = await data.json();
+   const parsed = await data.json();
    const msgGen = parsed.text;
    const err = parsed.error;
    const genAnswer = parsed.genAnswer; 
@@ -183,7 +176,7 @@ const generate = async (level) =>{
    }
   
    if(msgGen){
-     setMsg(prev => ({...prev, solve: msgGen, error:""}));    
+     setMsg(prev => ({...prev, solve: msgGen, error:"", numberSol: 1}));    
    }     
        console.log("genAnswer", genAnswer)
        console.log("genSolution", genSolution)
@@ -191,11 +184,20 @@ const generate = async (level) =>{
   setText(genAnswer);
   setGensolution(genSolution);
             
-    return   
+  return   
 }
 
-
 const getSolved = async () => {
+  setMsg(prev => ({...prev, solve: "Solved!", error:""})); 
+  setText(gensolution);
+
+}
+const confirm =()=>{
+ solve();
+
+}
+
+ const solve = async () => {
   const stuff = {"puzzle": text}
  // let doc = document.getElementById("error-msg");
   const data = await fetch("/api/solve", {
@@ -210,8 +212,10 @@ const getSolved = async () => {
   const msgSolved = parsed.text;
   const err = parsed.error;
   const solution = parsed.solution;
+  const numSolution = parsed.numberSolutions;
+  console.log("numSolution", numSolution)
   if (err) {
-   return setMsg(prev => ({...prev, error: err}));
+   return setMsg(prev => ({...prev, error: err, numberSol: 0}));
   }
   if(solution==='true'){
     console.log("truesolve-fillgrid-text :  ", text)
@@ -219,15 +223,23 @@ const getSolved = async () => {
   } 
   if(msgSolved){
     setMsg(prev => ({...prev, solve: msgSolved, error:""}));    
-  }     
+  }   
+  if(numSolution>0)  {
+    setMsg(prev=>({...prev, numberSol: numSolution}))
+  }
+  if(numSolution<0)  {
+    setMsg(prev=>({...prev, numberSol:0, error:"no solution"}))
+  }
+  
       console.log("solution", solution)
       //setText(solution);
-      setText(solution);
+      setGensolution(solution);
+      setLocked(text);
      // console.log("solution-text", text)
    return   //fillGrid(solution); 
-}
+} 
 
-    return(
+   return(
         <div id="container">                  
             <div id="grid-container">  
             <div id="row">
@@ -261,7 +273,7 @@ const getSolved = async () => {
                                 <input  className={row+col+" grid_input"} 
                                 //defaultValue={text[(row.charCodeAt(0)-"A".charCodeAt(0))*9 + ((col-1) % 9)] ? text[(row.charCodeAt(0)-"A".charCodeAt(0))*9 + ((col-1) % 9)]:" "}
                                 onChange ={(e)=>handleInput(e, col, row)}
-                                style={{backgroundColor:{color}}}
+                                style={{backgroundColor: color[(row.charCodeAt(0)-"A".charCodeAt(0))*9 + ((col-1) % 9)]}}
                                 id={row+col}
                                 autoComplete="disabled"
                                 type="text"
@@ -293,6 +305,7 @@ const getSolved = async () => {
                   <p id="solve-msg" > ---            
                   <span>{msg.solved==""? "": msg.solve}---</span></p> 
                 </div>
+                <p id="solve-msg">number solutions: <span>{msg.numberSol==""? "": msg.numberSol}</span></p>
               </div> 
                 
               <div  id="error-msg">              
@@ -317,15 +330,21 @@ const getSolved = async () => {
               </form>             
             </div>
             <div className="check">
-              <form id="text-form">           
-              <textarea
+              <form id="text-form">   
+              <label htmlFor="text-input">Sudoku puzzle string. Paste your own string and press "check" to check if valid and number solutions. </label>  
+              <div className="row">
+                  <textarea
                   value={text}
-                  onChange={(e)=>handleTextarea(e)}
+                  onChange={(e) => handleTextarea(e)}
                   //defaultValue={text}
                   cols="85"
+                  rows="3"
                   id="text-input"
                   name="puzzle">                    
               </textarea>
+              <button id="confirm" type="button" onClick={confirm} >CHECK</button>
+              </div>    
+            
                   <br />               
               </form>  
             </div>    

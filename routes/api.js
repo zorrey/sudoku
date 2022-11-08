@@ -61,16 +61,18 @@ app.route('/api/check')
         return res.json({ error: 'Invalid characters in puzzle' });     
       }
       let answer = solver.solve(puzzle);
-      
-      console.log('solver.solve(puzzle): ', solver.solve(puzzle))
+      let numberSolutions = solver.getNumberSolutions(solver.matrixCreator(puzzle));
+      //console.log('solver.solve(puzzle): ', solver.solve(puzzle))
       //console.log('answer: ', answer)
       if(!answer) {
         console.log("cannot be solved!!!")
         return res.json({ error: 'Puzzle cannot be solved' });
       } else{
         console.log('solved!');
-        if(answer === true) return res.json({ solution: 'true', text: "already solved!" });
-       return res.json({solution: answer, text: "solved!"});
+        console.log('numSol', numberSolutions);
+
+       if(answer === true) return res.json({ solution: 'true', text: "already solved!" });
+       return res.json({solution: answer, text: "valid sudoku puzzle!", numberSolutions: numberSolutions});
       }
     });
   app.route('/api/generate')
