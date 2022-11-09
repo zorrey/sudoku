@@ -32,7 +32,6 @@ const [msg, setMsg] = React.useState([{
     setColor(initialColorMatrix);
   }, 1000);
   return () => clearTimeout(timer);
-
 }, [text]) 
  
 const handleInput = (e, col, row) => {
@@ -55,8 +54,7 @@ const handleText=(e, col, row) => {
   }
   for (let i=0; i<temp.length; i++){
     if(temp[i]){
-    newText+=temp[i];
-    
+    newText+=temp[i];    
   } else newText+=".";
   }
   setText(newText); 
@@ -182,19 +180,17 @@ const generate = async (level) =>{
        console.log("genSolution", genSolution)
   setLocked(genAnswer);
   setText(genAnswer);
-  setGensolution(genSolution);
-            
+  setGensolution(genSolution);            
   return   
 }
 
 const getSolved = async () => {
   setMsg(prev => ({...prev, solve: "Solved!", error:""})); 
   setText(gensolution);
-
 }
+  
 const confirm =()=>{
  solve();
-
 }
 
  const solve = async () => {
@@ -229,8 +225,7 @@ const confirm =()=>{
   }
   if(numSolution<0)  {
     setMsg(prev=>({...prev, numberSol:0, error:"no solution"}))
-  }
-  
+  }  
       console.log("solution", solution)
       //setText(solution);
       setGensolution(solution);
@@ -238,16 +233,15 @@ const confirm =()=>{
      // console.log("solution-text", text)
    return   //fillGrid(solution); 
 } 
-
    return(
         <div id="container">                  
-            <div id="grid-container">  
-            <div id="row">
-              <input onClick={()=>generate(1)} type="button" value="Generate L1" id="gen-button1" />    
-              <input onClick={()=>generate(2)} type="button" value="Generate L2" id="gen-button2" />   
+           <div id="grid-container">  
+           <div id="menu">
+              <input onClick={()=>generate(1)} type="button" value="Generate L1" id = "gen-button1" />    
+              <input onClick={() => generate(2)} type="button" value="Generate L2" id="gen-button2" />   
               <input onClick={reload} type="button" value="Reload" id="gen-reload" />   
               <input onClick={joker} type="button" value="Joker" id="joker" />   
-            </div>
+           </div> 
             
             <table className="tableLayout">  
             <thead>
@@ -279,6 +273,7 @@ const confirm =()=>{
                                 type="text"
                                 size="1"
                                 maxLength="1"
+                                aria-label= {row+col}
                                 //placeholder={row+col}
                                 placeholder=" "
                                 value = {
@@ -295,13 +290,13 @@ const confirm =()=>{
                 } 
             </tbody>               
             </table>           
-            </div>
+          </div>
           <div id="form">
             <div className="check">
               <form id="check-form">
               <div id="buttons">
                 <div id="solve" > 
-                  <input onClick={getSolved} type="button" value="Solve" id="solve-button" />  
+                  <input onClick={getSolved} type="button" value="Solve" id ="solve-button" aria-label="solve" />  
                   <p id="solve-msg" > ---            
                   <span>{msg.solved==""? "": msg.solve}---</span></p> 
                 </div>
@@ -331,7 +326,7 @@ const confirm =()=>{
             </div>
             <div className="check">
               <form id="text-form">   
-              <label htmlFor="text-input">Sudoku puzzle string. Paste your own string and press "check" to check if valid and number solutions. </label>  
+              <label htmlFor="text-input">Sudoku puzzle string.</label>  
               <div className="row">
                   <textarea
                   value={text}
@@ -344,8 +339,7 @@ const confirm =()=>{
               </textarea>
               <button id="confirm" type="button" onClick={confirm} >CHECK</button>
               </div>    
-            
-                  <br />               
+              <div>Paste your own string and press "check" to check validity, number solutions and start playing.</div>
               </form>  
             </div>    
             

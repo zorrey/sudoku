@@ -9,40 +9,40 @@ input{
 }
 
 body{
-  background-color: rgb(14, 20, 27);
+  background-color: rgb(46, 49, 55);
   color: aliceblue;
-  font-family: Impact,  'Arial Narrow Bold', sans-serif;
-  font-weight: lighter;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-#row{
-  justify-content: space-between;
-  display: flex;
-  flex-direction:row;  
-  width: 70%;
+header{
+  text-align:center;
+}
+#menu{ 
+  
+  display: flex;  
+  flex-direction:column;  
   padding: 5px;
   font-size: inherit;
 }
 #container {
+  background-color: rgb(46, 49, 55);
+  justify-content:space-around;
   display: flex;
   flex-direction: column;  
   font-size: 22px;
+  margin: 0 auto;
 }
-
-#grid-container, header{ 
+#grid-container{ 
+  justify-content:center;
   background-color: rgb(46, 49, 55);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center; 
-  align-items: center;
-  padding-bottom: 10px;
+  flex-direction: row;
+  padding: 10px;
+  margin: 0 auto;
 }
-
 #check-form{
   width: 70%;  
   font-size: inherit;
 }
-
 .check{
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ body{
   font-size: inherit;
   }
 .input{
-  background-color: rgb(177, 171, 171);
+  background-color: white;
   display: flex;
   flex-direction:row;
   justify-content: space-between;  
@@ -62,7 +62,7 @@ body{
   font-size: inherit;
 }
 input:disabled{
-  background-color: rgba(217, 240, 188, 0.8) !important;
+  background-color: rgba(207, 241, 250, 0.8) !important;
   color: black;
   font-size: inherit;
 }
@@ -70,11 +70,7 @@ input:disabled{
   border-radius: 5px;
   font-size: inherit;
 }
-.checker{
-  width:30%;
-  align-content: flex-end;
-  justify-content: space-between;  
-}
+
 textarea {
   display: flex;
   align-items: center;
@@ -82,55 +78,42 @@ textarea {
   width:80%;
   font-size: 18px;
 }
-
-
 .cell{
   text-align: center;
   align-content: center;
   padding: 0px;
 }
-
 #error-msg {
-  border-radius: 5px;
-  border: 1px;
-  border-color: brown;
+  background-color:white;
   border-style: solid;
   color: red;
   margin-bottom: 10px ;
-}
-
-#grid {
-  text-align: center;
-  display: inline;
-}
-
-.grid {
-  border: 3px solid;
-  border-spacing: 0;
+  border-radius: 5px;
 }
 
 td {  
   padding: 0px 1px;
 }
 
-
 .tableLayout {
   text-align: left;
   font-weight:lighter;
   margin: 0 auto;
 }
+
 #solve{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: darkgrey;
+  background-color: white;
  margin-bottom: 10px;
  border-radius: 5px;
  color:rgb(78, 37, 37);
 }
-
+/* #gen-button1, #gen-button2, #gen-reload, #joker{
+  width:80%
+} */
 input[type="button"]{
-  width: 40%;
   padding: 3px;
   border-radius: 5px;
   background-color: bisque;
@@ -155,20 +138,17 @@ button{
   text-align: center;
 }
 .grid_input {
-  border: 1px solid rgb(151, 98, 98);
   width: 2em;
   height: 2em;
   text-align: center;
 }
 
 .C1, .C2, .C3, .C4, .C5, .C6, .C7, .C8, .C9, .F1, .F2, .F3, .F4, .F5, .F6, .F7, .F8, .F9 {
-  border-bottom: 5px solid;
-  border-color: rgb(210, 57, 57);
+  border-bottom: 5px solid red;
 }
 
 .A3, .B3, .C3, .D3, .E3, .F3, .G3, .H3, .I3, .A6, .B6, .C6, .D6, .E6, .F6, .G6, .H6, .I6 {
-  border-right: 5px solid;
-  border-color: rgb(210, 57, 57);
+  border-right: 5px solid red;
 }
 #check-form, #text-form{
   width: 70%;
@@ -180,32 +160,59 @@ button{
   flex-direction:row;
   justify-content: space-between;
 }
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------  */
+@media only screen and (max-width: 750px) and (min-width:550px) {
+#menu{
+  width:100%;
+ justify-content: space-between;  
+  align-self: center;
+  display: flex;
+  flex-direction:row; 
+  padding: 5px;
+  font-size: inherit;
+  background-color: rgb(110, 106, 106);
+}
+#grid-container, header{ 
+  flex-direction: column;
+}  
+}
 /*----------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------------------*/
 @media only screen and (max-width: 550px) and (min-width:300px) {
   #root, body, header{
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    text-align: center;
+   width: 100vw;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   text-align: center;
   }
   #container {
-    width:100%;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    display: flex;
-    flex-wrap: wrap;    
-    font-size: 16px;
+   width:100%;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   display: flex;
+   flex-wrap: wrap;    
+   font-size: 14px;
   }
-  #row, .row{
-    justify-content: center;
-    display: flex;
-    flex-direction: column;  
-    width: 100%;
+
+  #menu, .row{
+   justify-content: center;
+   align-self: center;
+   display: flex;
+   flex-direction: column;  
+   width: 100%;
   }
+  input[type="button"]{
+    padding: 3px;
+    border-radius: 5px;
+    background-color: bisque;
+    border-color: rgb(206, 196, 196);
+    font-size: inherit;
+    width:30%;
+  }
+  
 .check{
   display: flex;
   flex-wrap: wrap;
@@ -219,22 +226,21 @@ button{
     align-self: center;
   }
   #solve{
-    display: flex;
-    flex-wrap: wrap;
+   display: flex;
+   flex-wrap: wrap;
    margin-bottom: 10px;
    border-radius: 5px;
    color:rgb(78, 37, 37);
   }
   
   td {  
-    padding: 0px 1px;
+   padding: 0px 1px;
   }
   tbody{
     width:100vw;
     padding: 0;
   }
   .grid_input {
-    border: 1px solid rgb(151, 98, 98);
     width: 1.5em;
     height: 1.5em;
     text-align: center;
@@ -248,6 +254,7 @@ button{
   #grid-container{ 
     width:100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 0px;
@@ -257,20 +264,12 @@ button{
     width: 100%;
     margin: 0;
   }
-  .checker{
-    width:40%;
-    align-content: flex-end;
-    justify-content: space-between;  
-  }
-
   .C1, .C2, .C3, .C4, .C5, .C6, .C7, .C8, .C9, .F1, .F2, .F3, .F4, .F5, .F6, .F7, .F8, .F9 {
-    border-bottom: 5px solid;
-    border-color: rgb(210, 57, 57);
+    border-bottom: 5px solid red;
   }
   
   .A3, .B3, .C3, .D3, .E3, .F3, .G3, .H3, .I3, .A6, .B6, .C6, .D6, .E6, .F6, .G6, .H6, .I6 {
-    border-right: 5px solid;
-    border-color: rgb(210, 57, 57);
+    border-right: 5px solid red;
   }
   textarea {
     width:100%;
@@ -299,7 +298,7 @@ button{
     flex-direction: column;
     display: flex;
     flex-wrap: wrap;
-    font-size: 12px;
+    font-size: 10px;
   }
   
 .check{
@@ -321,8 +320,19 @@ button{
    border-radius: 5px;
    color:rgb(78, 37, 37);
   }
-  #row, .row{
+
+  input[type="button"]{
+    padding: 3px;
+    border-radius: 5px;
+    background-color: bisque;
+    border-color: rgb(206, 196, 196);
+    font-size: inherit;
+    width:50%;
+  }
+  
+  #menu, .row{
     flex-wrap: wrap;
+    align-self: center;
     justify-content: center;
     display: flex;
     flex-direction: column;  
@@ -338,6 +348,7 @@ button{
   }
   #grid-container{ 
     width:100%;
+    flex-direction:column;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -360,7 +371,6 @@ button{
     width:100vw;
   }
   .grid_input {
-    border: 1px solid rgb(151, 98, 98);
     width: 1.5em;
     height: 1.5em;
     text-align: center;
@@ -372,13 +382,11 @@ button{
     border-spacing:0;
   }
   .C1, .C2, .C3, .C4, .C5, .C6, .C7, .C8, .C9, .F1, .F2, .F3, .F4, .F5, .F6, .F7, .F8, .F9 {
-    border-bottom: 5px solid;
-    border-color: rgb(210, 57, 57);
+    border-bottom: 5px solid red;
   }
   
   .A3, .B3, .C3, .D3, .E3, .F3, .G3, .H3, .I3, .A6, .B6, .C6, .D6, .E6, .F6, .G6, .H6, .I6 {
-    border-right: 5px solid;
-    border-color: rgb(210, 57, 57);
+    border-right: 5px solid red;
   }
   textarea {
     width:100%;
@@ -389,4 +397,7 @@ button{
     width: 100%;
     font-size: inherit;
   }
+}
+.author{
+  color:white;
 }

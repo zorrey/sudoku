@@ -1,7 +1,5 @@
-class SudokuGenerator {
-    
-}
-module.exports = SudokuGenerator;const SudokuSolver = require('../controllers/sudoku-solver.js');
+
+const SudokuSolver = require('../controllers/sudoku-solver.js');
 let solver = new SudokuSolver();
 let initial = [
    [0,0,0,0,0,0,0,0,0],
